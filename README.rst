@@ -12,8 +12,8 @@ connections defined under it::
 
 	s3:
 	  aws:
-	    aws_access_key_id: EDIT-ME
-	    aws_secret_access_key: EDIT-ME
+	    access_key: EDIT-ME
+	    secret_key: EDIT-ME
 
 	  dho:
 	    host: objects.dreamhost.com
