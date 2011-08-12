@@ -28,15 +28,24 @@ def main():
     s3 = argparse.Namespace()
 
     for k, v in config.get('s3', {}).iteritems():
-        conn_kwargs = dict(
-            calling_format=boto.s3.connection.OrdinaryCallingFormat(),
-            )
-        host = boto.config.get('Boto', 's3_host')
+        conn_kwargs = {}
+
+        host = v.get('host')
         if host is not None:
             conn_kwargs['host'] = host
-        port = boto.config.getint('Boto', 's3_port')
+            conn_kwargs['calling_format'] = boto.s3.connection.OrdinaryCallingFormat()
+
+        port = v.get('port')
         if port is not None:
             conn_kwargs['port'] = port
+
+        is_secure = v.get('is_secure')
+        if is_secure is not None:
+            conn_kwargs['is_secure'] = is_secure
+
+        conn_kwargs['aws_access_key_id'] = v['access_key']
+        conn_kwargs['aws_secret_access_key'] = v['secret_key']
+
         conn = boto.s3.connection.S3Connection(**conn_kwargs)
         setattr(s3, k, conn)
 
